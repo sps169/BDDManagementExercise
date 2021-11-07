@@ -1,9 +1,10 @@
 package repositories;
 
 import database.DatabaseController;
-import model.Lenguajes;
+import model.Lenguaje;
 import model.Programador;
 
+import javax.swing.text.html.Option;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -43,8 +44,8 @@ public class ProgramadorRepository {
                 ));
     }
 
-    private static List<Lenguajes> procesarStringLenguajes (String lenguajes) {
-        return Arrays.stream(lenguajes.split(";")).map(Lenguajes::valueOf).collect(Collectors.toList());
+    private static List<Lenguaje.Lenguajes> procesarStringLenguajes (String lenguajes) {
+        return Arrays.stream(lenguajes.split(";")).map(Lenguaje.Lenguajes::valueOf).collect(Collectors.toList());
     }
 
     public static List<Programador> selectAllProgramadores() {
@@ -78,5 +79,59 @@ public class ProgramadorRepository {
             System.err.println("Error at select programador with id: " + id);
         }
         return programadores;
+    }
+
+    public static Optional<Programador> deleteProgramador (Programador programador) {
+        String query = "delete from programadores where id_programador = ?";
+        Optional<Programador> returnOptional = Optional.empty();
+        try {
+            db.open();
+            if (db.delete(query, programador.getId()) > 0) {
+                returnOptional = Optional.of(programador);
+            }
+            db.close();
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return returnOptional;
+    }
+
+    public static Optional<Programador> updateProgramador (Programador programador) {
+        String query = "update programadores set nombre_programador = ?, experiencia = ?, salario = ?, id_departamento = ?, lenguajes = ? where id_programador = ?";
+        Optional<Programador> returnOptional = Optional.empty();
+        try {
+            db.open();
+            if (db.update(query,
+                    programador.getNombre(),
+                    programador.getExperiencia(),
+                    programador.getSalario(),
+                    programador.getId_departamento(),
+                    Lenguaje.lenguajesACadena(programador.getLenguajes()),
+                    programador.getId())
+             > 0) {
+                returnOptional = Optional.of(programador);
+            }
+            db.close();
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return returnOptional;
+    }
+
+    public static Optional<Programador> insertProgramador (Programador programador) {
+        String query = "insert into programadores values (?, ?, ?, ?, ?, ?)";
+        Optional<Programador> returnOptional = Optional.empty();
+        try {
+            db.open();
+            ResultSet result = db.insert(query,programador.getId(), programador.getNombre(), programador.getExperiencia(), programador.getSalario(), programador.getId_departamento(), Lenguaje.lenguajesACadena(programador.getLenguajes())).orElseThrow(() -> new SQLException());
+            if (result.next()) {
+                programador.setId(result.getLong("id_programador"));
+                returnOptional = Optional.of(programador);
+            }
+            db.close();
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return returnOptional;
     }
 }

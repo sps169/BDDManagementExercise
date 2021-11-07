@@ -8,9 +8,9 @@ public class Programador {
     private int experiencia;
     private double salario;
     private long id_departamento;
-    private List<Lenguajes> lenguajes;
+    private List<Lenguaje.Lenguajes> lenguajes;
 
-    public Programador(long id, String nombre, int experiencia, double salario, long id_departamento, List<Lenguajes> lenguajes) {
+    public Programador(long id, String nombre, int experiencia, double salario, long id_departamento, List<Lenguaje.Lenguajes> lenguajes) {
         this.id = id;
         this.nombre = nombre;
         this.experiencia = experiencia;
@@ -59,11 +59,11 @@ public class Programador {
         this.id_departamento = id_departamento;
     }
 
-    public List<Lenguajes> getLenguajes() {
+    public List<Lenguaje.Lenguajes> getLenguajes() {
         return lenguajes;
     }
 
-    public void setLenguajes(List<Lenguajes> lenguajes) {
+    public void setLenguajes(List<Lenguaje.Lenguajes> lenguajes) {
         this.lenguajes = lenguajes;
     }
 

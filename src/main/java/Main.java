@@ -1,14 +1,19 @@
 import database.DatabaseController;
+import model.Departamento;
+import model.Lenguaje;
+import model.Programador;
 import repositories.DepartamentoRepository;
 import repositories.ProgramadorRepository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class Main {
     public static void main (String[] args) {
-        DepartamentoRepository.selectDepartamentoConId(1).ifPresent(System.out::println);
+       checkServer();
     }
     private static void checkServer() {
         System.out.println("Comprobamos la conexión al Servidor BD");
