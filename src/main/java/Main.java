@@ -1,14 +1,7 @@
 import database.DatabaseController;
-import model.Departamento;
-import model.Lenguaje;
-import model.Programador;
-import repositories.DepartamentoRepository;
-import repositories.ProgramadorRepository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 public class Main {
@@ -22,7 +15,8 @@ public class Main {
             controller.open();
             Optional<ResultSet> rs = controller.select("SELECT 'Hello World'");
             if (rs.isPresent()) {
-                System.out.println(rs.get().next());;
+                rs.get().next();
+                System.out.println(rs.get().getString(1));
                 controller.close();
             }
         } catch (SQLException e) {
